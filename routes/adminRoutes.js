@@ -1,31 +1,24 @@
 const express = require('express');
 const router = express.Router();
-const authController = require('../controllers/authController');
-
+const { isAdmin } = require('../middleware/authMiddleware');
+const adminController = require('../controller/adminController');
 
 // root route
 router.get('/', (req, res) => {
   res.render('pages/landing');
 });
-// Signup
-router.get('/signup', authController.getSignup);
-router.post('/signup', authController.postSignup);
+router.get('/dashboard', isAdmin, adminController.getDashboard);
 
 
-// Email verification
-router.get('/verify-email', authController.verifyEmail);
+router.get('/add-food',isAdmin, adminController.getAddFood);
+router.post('/add-food',isAdmin, adminController.postAddFood);
 
 
-// Login
-router.get('/login', authController.getLogin);
-router.post('/login', authController.postLogin);
+router.get('/food',isAdmin, adminController.getAllFoods);
 
 
-// Forgot and reset password routes
-router.get('/forgot-password', authController.getForgotPassword);
-router.post('/forgot-password', authController.forgotPassword);
-router.get('/reset-password', authController.getResetPassword);
-router.post('/reset-password', authController.resetPassword);
-
+router.get('/edit-food/:id',isAdmin, adminController.getEditFood);
+router.post('/edit-food/:id',isAdmin, adminController.postEditFood);
+router.post('/delete-food/:id',isAdmin, adminController.deleteFood);
 
 module.exports = router;
